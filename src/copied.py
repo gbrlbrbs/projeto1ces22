@@ -10,15 +10,15 @@ red = (213, 50, 80)
 green = (0, 255, 0)
 blue = (50, 153, 213)
 
-dis_width = 600
-dis_height = 400
+dis_width = 800
+dis_height = 600
 
 dis = pygame.display.set_mode((dis_width, dis_height))
-pygame.display.set_caption('Snake Game by Edureka')
+pygame.display.set_caption('CobrITA')
 
 clock = pygame.time.Clock()
 
-snake_block = 10
+snake_block = 20
 snake_speed = 15
 
 font_style = pygame.font.SysFont("bahnschrift", 25)
@@ -53,8 +53,8 @@ def game_loop():
     snake_list = []
     length_of_snake = 1
 
-    foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
-    foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
+    foodx = round(random.randrange(0, dis_width - snake_block) / float(snake_block)) * float(snake_block)
+    foody = round(random.randrange(0, dis_height - snake_block) / float(snake_block)) * float(snake_block)
 
     while not game_over:
 
@@ -110,8 +110,8 @@ def game_loop():
         pygame.display.update()
 
         if x1 == foodx and y1 == foody:
-            foodx = round(random.randrange(0, dis_width - snake_block) / 10.0) * 10.0
-            foody = round(random.randrange(0, dis_height - snake_block) / 10.0) * 10.0
+            foodx = round(random.randrange(0, dis_width - snake_block) / float(snake_block)) * float(snake_block)
+            foody = round(random.randrange(0, dis_height - snake_block) / float(snake_block)) * float(snake_block)
             length_of_snake += 1
 
         clock.tick(snake_speed)
@@ -120,4 +120,5 @@ def game_loop():
     quit()
 
 
-game_loop()
+if __name__ == '__main__':
+    game_loop()
