@@ -1,5 +1,7 @@
 import random
+
 import pygame
+from pygame.math import Vector2
 
 
 class Snake:
@@ -7,21 +9,25 @@ class Snake:
         self.WIDTH = 10
         self.HEIGHT = 5
 
-        self.LEFT = (-1, 0)
-        self.DOWN = (0, 1)
-        self.RIGHT = (1, 0)
-        self.UP = (0, -1)
+        self.LEFT = Vector2(-1, 0)
+        self.DOWN = Vector2(0, 1)
+        self.RIGHT = Vector2(1, 0)
+        self.UP = Vector2(0, -1)
 
         self.DIRECTIONS = [self.LEFT, self.DOWN, self.RIGHT, self.UP]
-
+        self.direction_index = 0
         self.length = 1
-        self.positions = [((self.WIDTH / 2), (self.HEIGHT / 2))]
-        self.direction = random.choice(self.DIRECTIONS)
-        self.color = (17, 24, 47)
+
+        self.head = Vector2(0, 0)
+        self.positions = [self.head]
+
         self.score = 0
 
-    def get_head_position(self):
-        return self.positions[0]
+    def turn_left(self):
+        self.direction_index = (self.direction_index - 1) % len(self.DIRECTIONS)
+
+    def turn_right(self):
+        self.direction_index = (self.direction_index + 1) % len(self.DIRECTIONS)
 
     def turn(self, point):
         if self.length > 1 and (point[0] * -1, point[1] * -1) == self.direction:
