@@ -1,5 +1,5 @@
 # map selection class here
-from src.engine import State
+from .statemachine.state import State
 
 
 class MapSelection(State):

@@ -1,5 +1,5 @@
 # initial menu class here
-from src.engine import State
+from .statemachine.state import State
 
 
 class Menu(State):

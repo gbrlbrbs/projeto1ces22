@@ -1,5 +1,5 @@
 # starts the game
-from src.engine import State
+from .statemachine.state import State
 
 
 class Game(State):
