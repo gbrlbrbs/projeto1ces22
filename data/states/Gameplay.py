@@ -35,14 +35,8 @@ class Gameplay(GameState):
         elif event.type == pg.MOUSEBUTTONUP:
             self.title_rect.center = event.pos
         elif event.type == pg.KEYUP:
-            if event.key == pg.K_l:
-                self.next_state = "PLAY AGAIN"
-                self.persist["restart"] = True
-                self.done = True
-            elif event.key == pg.K_w:
-                self.next_state = "WIN"
-                self.persist["restart"] = True
-                self.done = True
+            if event.key == pg.K_c:
+                self.collided()
             elif event.key in [pg.K_ESCAPE, pg.K_p]:
                 self.next_state = "PAUSED"
                 self.persist["restart"] = False
@@ -60,18 +54,7 @@ class Gameplay(GameState):
     def update(self, dt):
         collided = self.snake.move()
         if collided:
-            last_game = {'level': self.level, 'score': self.snake.score}
-            self.persist["last_game"] = last_game
-
-            if self.snake.score >= 0:
-                if self.level != len(c.maps):
-                    new_level = self.level + 1
-                    if new_level not in self.persist["unlocked_levels"]:
-                        self.persist["unlocked_levels"].append(new_level)
-                self.next_state = "WIN"
-            else:
-                self.next_state = "PLAY AGAIN"
-            self.done = True
+            self.collided()
             return
 
         if self.snake.get_head_position() == self.food.position:
@@ -83,6 +66,20 @@ class Gameplay(GameState):
         self.score = self.font.render(score_text, True, pg.Color("gray10"))
         self.score_rect = self.score.get_rect(left=self.screen_rect.left)
         self.score_rect.move_ip(10, 10)
+
+    def collided(self):
+        last_game = {'level': self.level, 'score': self.snake.score}
+        self.persist["last_game"] = last_game
+
+        if self.snake.score >= c.min_score:
+            if self.level != len(c.maps):
+                new_level = self.level + 1
+                if new_level not in self.persist["unlocked_levels"]:
+                    self.persist["unlocked_levels"].append(new_level)
+            self.next_state = "WIN"
+        else:
+            self.next_state = "PLAY AGAIN"
+        self.done = True
 
     def draw(self, surface):
         draw_grid(surface, c1=self.screen_color, c2=self.screen_color)
