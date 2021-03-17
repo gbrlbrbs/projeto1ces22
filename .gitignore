@@ -1,4 +1,6 @@
 /virtualenv
+/venv
 *.idea
 *__pycache__*
 entregas
+venv
