@@ -13,12 +13,12 @@ from data.states.Paused import Paused
 from data.states.PlayAgain import PlayAgain
 from data.states.Win import Win
 
+import data.constants as c
+
 
 def main():
     pg.init()
-    # size = 1280, 720
-    size = 640, 360
-    screen = pg.display.set_mode(size)
+    screen = pg.display.set_mode((c.screen_width, c.screen_height))
     states = {
         "MENU": Menu(),
         "MAP SELECTION": MapSelection(),
@@ -29,7 +29,7 @@ def main():
         "HELP": Help(),
         "CREDITS": Credits()
     }
-    game = Game(screen, states, "MENU")
+    game = Game(screen, states, "MENU", persist={'unlocked_levels': [1]})
     game.run()
     pg.quit()
     sys.exit()

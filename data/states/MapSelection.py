@@ -9,13 +9,12 @@ class MapSelection(GameState):
 
     def startup(self, persistent):
         super().startup(persistent)
-        for prop in ["level", "screen_color"]:
-            if prop in self.persist:
-                print("deletei {}".format(prop))
-                del self.persist[prop]
-        text = "Map Selection. Press a number 1-{} for gameplay or M-menu.".format(len(c.maps))
+        self.unlocked = self.persist["unlocked_levels"]
+        text = "Map Selection. Press {} for gameplay or M-menu.".format(self.unlocked)
         self.title = self.font.render(text, True, pg.Color("gray10"))
         self.title_rect = self.title.get_rect(center=self.screen_rect.center)
+        if c.DEBUG:
+            print(self.__class__.__name__, self.persist)
 
     def get_event(self, event):
         if event.type == pg.QUIT:
@@ -26,11 +25,10 @@ class MapSelection(GameState):
                 self.done = True
             elif pg.K_1 <= event.key <= pg.K_9:
                 level = event.key - pg.K_1 + 1
-                if 1 <= level <= len(c.maps):
+                if 1 <= level <= len(c.maps) and level in self.unlocked:
                     self.next_state = "GAMEPLAY"
                     self.persist["level"] = level
                     self.persist["restart"] = True
-                    self.persist["screen_color"] = c.colors[level - 1]
                     self.done = True
 
         elif event.type == pg.MOUSEBUTTONUP:

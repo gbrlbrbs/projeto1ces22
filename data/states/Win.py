@@ -1,5 +1,6 @@
 import pygame as pg
 from data.states.GameState import GameState
+import data.constants as c
 
 
 class Win(GameState):
@@ -12,6 +13,8 @@ class Win(GameState):
         text = "You won! Congratulations!! Press any key to continue."
         self.title = self.font.render(text, True, pg.Color("gray10"))
         self.title_rect = self.title.get_rect(center=self.screen_rect.center)
+        if c.DEBUG:
+            print(self.__class__.__name__, self.persist)
 
     def get_event(self, event):
         if event.type == pg.QUIT:

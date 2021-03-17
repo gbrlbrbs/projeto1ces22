@@ -1,4 +1,5 @@
 import pygame as pg
+import data.constants as c
 
 
 class Game(object):
@@ -11,7 +12,7 @@ class Game(object):
     and its run method serves as the "game loop".
     """
 
-    def __init__(self, screen, states, start_state):
+    def __init__(self, screen, states, start_state, persist=None):
         """
         Initialize the Game object.
 
@@ -22,12 +23,13 @@ class Game(object):
         self.done = False
         self.screen = screen
         self.clock = pg.time.Clock()
-        self.fps = 60
+        self.fps = c.fps
         self.states = states
         self.state_name = start_state
         self.state = self.states[self.state_name]
-        self.state.startup(self.state.persist)
-        print(self.state_name, self.state.persist)
+        if persist is None:
+            persist = self.state.persist
+        self.state.startup(persist)
 
     def event_loop(self):
         """Events are passed for handling to the current state."""
@@ -36,14 +38,12 @@ class Game(object):
 
     def flip_state(self):
         """Switch to the next game state."""
-        current_state = self.state_name
         next_state = self.state.next_state
         self.state.done = False
         self.state_name = next_state
         persistent = self.state.persist
         self.state = self.states[self.state_name]
         self.state.startup(persistent)
-        print(next_state, persistent)
 
     def update(self, dt):
         """
