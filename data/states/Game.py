@@ -26,6 +26,8 @@ class Game(object):
         self.states = states
         self.state_name = start_state
         self.state = self.states[self.state_name]
+        self.state.startup(self.state.persist)
+        print(self.state_name, self.state.persist)
 
     def event_loop(self):
         """Events are passed for handling to the current state."""
@@ -41,6 +43,7 @@ class Game(object):
         persistent = self.state.persist
         self.state = self.states[self.state_name]
         self.state.startup(persistent)
+        print(next_state, persistent)
 
     def update(self, dt):
         """

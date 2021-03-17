@@ -27,7 +27,7 @@ class GameState(object):
         """
         Handle a single event passed by the Game object.
         """
-        pass
+        raise NotImplementedError
 
     def update(self, dt):
         """
@@ -42,4 +42,4 @@ class GameState(object):
         """
         Draw everything to the screen.
         """
-        pass
+        raise NotImplementedError
