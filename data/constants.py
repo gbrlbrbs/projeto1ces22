@@ -17,4 +17,4 @@ gridsize = 20
 grid_width = screen_width / gridsize
 grid_height = screen_height / gridsize
 
-min_score = 1
+min_score = 6
