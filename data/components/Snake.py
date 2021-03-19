@@ -26,7 +26,12 @@ class Snake:
     def move(self):
         cur = self.get_head_position()
         x, y = self.direction
-        new = (((cur[0] + (x * c.gridsize)) % c.screen_width), (cur[1] + (y * c.gridsize)) % c.screen_height)
+        new = (cur[0] + (x * c.gridsize), cur[1] + (y * c.gridsize))
+        xn, yn = new
+        # checks if the snake collided with map borders
+        if xn < 0 or xn >= c.screen_width or yn >= c.screen_height or yn < 0:
+            return True
+        # checks if the snake collided with itself
         if len(self.positions) > 2 and new in self.positions[2:]:
             return True
         else:
