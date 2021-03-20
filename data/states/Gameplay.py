@@ -2,6 +2,7 @@ import pygame as pg
 
 from data.components.Food import Food
 from data.components.Snake import Snake
+from data.components.PowerUp import PowerUp, PowerUpFactory
 from data.components.draw_grid import draw_grid
 from data.states.GameState import GameState
 
@@ -17,27 +18,33 @@ class Gameplay(GameState):
         restart = self.persist["restart"]
         if restart:
             self.restart()
+        self.factory.start()
         self.level = self.persist["level"]
         self.screen_color = pg.Color(c.colors[self.level - 1])
         text = "Gameplay. Level {}. Press ESC/P-pause".format(self.level)
         self.title = self.font.render(text, True, pg.Color("gray20"))
         self.title_rect = self.title.get_rect(center=self.screen_rect.center)
+
         if c.DEBUG:
             print(self.__class__.__name__, self.persist)
 
     def restart(self):
         self.snake = Snake()
         self.food = Food()
+        self.factory = PowerUpFactory(5, {}, self.snake.positions)
 
     def get_event(self, event):
         if event.type == pg.QUIT:
+            self.factory.stop()
             self.quit = True
         elif event.type == pg.MOUSEBUTTONUP:
             self.title_rect.center = event.pos
         elif event.type == pg.KEYUP:
             if event.key == pg.K_c:
+                self.factory.stop()
                 self.collided()
             elif event.key in [pg.K_ESCAPE, pg.K_p]:
+                self.factory.stop()
                 self.next_state = "PAUSED"
                 self.persist["restart"] = False
                 self.done = True
@@ -60,7 +67,7 @@ class Gameplay(GameState):
         if self.snake.get_head_position() == self.food.position:
             self.snake.length += 1
             self.snake.score += 1
-            self.food.randomize_position()
+            self.food.randomize_position(self.snake.positions)
 
         score_text = "Score: {}".format(self.snake.score)
         self.score = self.font.render(score_text, True, pg.Color("gray10"))
@@ -80,6 +87,12 @@ class Gameplay(GameState):
         else:
             self.next_state = "PLAY AGAIN"
         self.done = True
+
+    def cleanup(self):
+        self.factory.stop()
+        if self.next_state != "PAUSED":
+            self.persist.pop("level")
+            self.persist.pop("restart")
 
     def draw(self, surface):
         draw_grid(surface, c1=self.screen_color, c2=self.screen_color)

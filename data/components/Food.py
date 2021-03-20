@@ -1,5 +1,4 @@
 import random
-
 import pygame
 import data.constants as c
 
