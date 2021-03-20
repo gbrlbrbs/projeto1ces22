@@ -1,4 +1,6 @@
-from random import randint
+from random import randint, random
+from threading import Timer
+from functools import partial
 import pygame as pg
 import data.constants as c
 
@@ -19,7 +21,8 @@ class PowerUp:
             if self.position not in snake:
                 return
 
-    def draw(self, surface, c1=(93, 216, 228)):
-        r = pg.Rect((self.position[0], self.position[1]), (c.gridsize, c.gridsize))
-        pg.draw.rect(surface, self.color, r)
-        pg.draw.rect(surface, c1, r, 1)
+
+def draw(self, surface, c1=(93, 216, 228)):
+    r = pg.Rect((self.position[0], self.position[1]), (c.gridsize, c.gridsize))
+    pg.draw.rect(surface, self.color, r)
+    pg.draw.rect(surface, c1, r, 1)

@@ -34,7 +34,6 @@ class Gameplay(GameState):
         restart = self.persist["restart"]
         if restart:
             self.restart()
-
         self.factory.start()
 
     def restart(self):
@@ -50,8 +49,10 @@ class Gameplay(GameState):
             self.title_rect.center = event.pos
         elif event.type == pg.KEYUP:
             if event.key == pg.K_c:
+                self.factory.stop()
                 self.collided()
             elif event.key in [pg.K_ESCAPE, pg.K_p]:
+                self.factory.stop()
                 self.next_state = "PAUSED"
                 self.persist["restart"] = False
                 self.factory.stop()

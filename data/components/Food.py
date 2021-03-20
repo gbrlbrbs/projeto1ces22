@@ -19,8 +19,8 @@ class Food:
             snake = []
         while True:
             self.position = (
-                random.randint(0, c.grid_width - 1)*c.gridsize, random.randint(0, c.grid_height - 1) * c.gridsize
-                )
+                random.randint(0, c.grid_width - 1) * c.gridsize, random.randint(0, c.grid_height - 1) * c.gridsize
+            )
             # item position can't override snake's body
             if self.position not in snake:
                 return
@@ -41,8 +41,7 @@ class Food:
         sprite = pygame.image.load(
             os.path.join(
                 self.sprite_path, 'acai' + str(self.sprite_counter) + '.png'
-                )
             )
+        )
         sprite = sprite.convert_alpha()
         return sprite
-        
