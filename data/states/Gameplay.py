@@ -4,7 +4,7 @@ from data.components.Food import Food
 from data.components.PowerUpFactory import PowerUpFactory
 from data.components.Snake import Snake
 from data.components.draw_grid import draw_grid
-from data.states.GameState import GameState
+from data.states.statemachine.GameState import GameState
 
 import data.constants as c
 
