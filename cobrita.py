@@ -4,7 +4,7 @@ import sys
 import pygame as pg
 
 from data.states.Credits import Credits
-from data.states.Game import Game
+from data.states.statemachine.Game import Game
 from data.states.Gameplay import Gameplay
 from data.states.Help import Help
 from data.states.MapSelection import MapSelection
