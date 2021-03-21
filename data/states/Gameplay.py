@@ -26,9 +26,6 @@ class Gameplay(GameState):
         self.title = self.font.render(text, True, pg.Color("gray20"))
         self.title_rect = self.title.get_rect(center=self.screen_rect.center)
 
-        if c.DEBUG:
-            print(self.__class__.__name__, self.persist)
-
     def restart(self):
         self.snake = Snake()
         self.food = Food()

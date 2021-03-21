@@ -2,7 +2,6 @@ import pygame as pg
 
 import data
 from data.states.statemachine.GameState import GameState
-import data.constants as c
 
 
 class Menu(GameState):
@@ -14,8 +13,6 @@ class Menu(GameState):
         text = "Menu. Press M-map, H-help or C-credits."
         self.title = self.font.render(text, True, pg.Color("gray50"))
         self.title_rect = self.title.get_rect(center=self.screen_rect.center)
-        if c.DEBUG:
-            print(self.__class__.__name__, self.persist)
 
     def get_event(self, event):
         if event.type == pg.QUIT:
