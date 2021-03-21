@@ -1,5 +1,5 @@
 import pygame as pg
-from data.states.GameState import GameState
+from data.states.statemachine.GameState import GameState
 import data.constants as c
 
 
