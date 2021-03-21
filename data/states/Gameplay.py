@@ -90,7 +90,7 @@ class Gameplay(GameState):
 
     def cleanup(self):
         self.factory.stop()
-        if self.next_state != "PAUSED":
+        if self.next_state not in ["PAUSED", "PLAY AGAIN"]:
             self.persist.pop("level")
             self.persist.pop("restart")
 
