@@ -40,6 +40,7 @@ class Game(object):
         """Switch to the next game state."""
         next_state = self.state.next_state
         self.state.done = False
+        self.state.cleanup()
         self.state_name = next_state
         persistent = self.state.persist
         self.state = self.states[self.state_name]
