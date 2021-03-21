@@ -8,12 +8,10 @@ class MapSelection(GameState):
         super().__init__()
 
     def startup(self, persistent):
+        self.text = "Map Selection. Press {} for gameplay or M-menu.".format(self.unlocked)
         super().startup(persistent)
         # sets unlocked levels
         self.unlocked = self.persist["unlocked_levels"]
-        text = "Map Selection. Press {} for gameplay or M-menu.".format(self.unlocked)
-        self.title = self.font.render(text, True, pg.Color("gray50"))
-        self.title_rect = self.title.get_rect(center=self.screen_rect.center)
 
     def get_event(self, event):
         if event.type == pg.QUIT:
