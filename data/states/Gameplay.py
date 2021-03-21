@@ -16,15 +16,17 @@ class Gameplay(GameState):
 
     def startup(self, persistent):
         super().startup(persistent)
+        self.level = self.persist["level"]
+        self.text = "Gameplay. Level {}. Press ESC/P-pause".format(self.level)
+        self.title = self.font.render(self.text, True, pg.Color("gray20"))
+        self.title_rect = self.title.get_rect(center=self.screen_rect.center)
+        self.screen_color = pg.Color(c.colors[self.level - 1])
+
         restart = self.persist["restart"]
         if restart:
             self.restart()
+
         self.factory.start()
-        self.level = self.persist["level"]
-        self.screen_color = pg.Color(c.colors[self.level - 1])
-        text = "Gameplay. Level {}. Press ESC/P-pause".format(self.level)
-        self.title = self.font.render(text, True, pg.Color("gray20"))
-        self.title_rect = self.title.get_rect(center=self.screen_rect.center)
 
     def restart(self):
         self.snake = Snake()

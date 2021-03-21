@@ -8,10 +8,8 @@ class Paused(GameState):
         super().__init__()
 
     def startup(self, persistent):
+        self.text = "Paused. Press C-continue or M-map."
         super().startup(persistent)
-        text = "Paused. Press C-continue or M-map."
-        self.title = self.font.render(text, True, pg.Color("gray50"))
-        self.title_rect = self.title.get_rect(center=self.screen_rect.center)
 
     def get_event(self, event):
         if event.type == pg.QUIT:

@@ -9,10 +9,8 @@ class Menu(GameState):
         super().__init__()
 
     def startup(self, persistent):
+        self.text = "Menu. Press M-map, H-help or C-credits."
         super().startup(persistent)
-        text = "Menu. Press M-map, H-help or C-credits."
-        self.title = self.font.render(text, True, pg.Color("gray50"))
-        self.title_rect = self.title.get_rect(center=self.screen_rect.center)
 
     def get_event(self, event):
         if event.type == pg.QUIT:
