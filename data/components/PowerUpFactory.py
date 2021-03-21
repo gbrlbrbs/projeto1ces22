@@ -1,6 +1,4 @@
-import data.constants as c
 import random
-import pygame as pg
 from data.components.PowerUp import PowerUp
 from data.components.TimerThread import TimerThread
 
@@ -35,7 +33,7 @@ class PowerUpFactory:
         Simplified creation method
         """
         k = random.random()
-        if c.DEBUG:
+        if __debug__:
             print("factory running")
         if k > 0.5:
             print("entered")

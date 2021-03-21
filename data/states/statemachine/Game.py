@@ -45,6 +45,8 @@ class Game(object):
         persistent = self.state.persist
         self.state = self.states[self.state_name]
         self.state.startup(persistent)
+        if __debug__:
+            print(self.state.__class__.__name__, self.state.persist)
 
     def update(self, dt):
         """
