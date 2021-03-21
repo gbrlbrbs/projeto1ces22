@@ -22,6 +22,9 @@ class GameState(object):
         persistent: a dict passed from state to state
         """
         self.persist = persistent
+        if hasattr(self, 'text'):
+            self.title = self.font.render(self.text, True, pg.Color("gray50"))
+            self.title_rect = self.title.get_rect(center=self.screen_rect.center)
 
     def get_event(self, event):
         """
