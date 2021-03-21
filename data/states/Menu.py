@@ -1,4 +1,6 @@
 import pygame as pg
+
+import data
 from data.states.statemachine.GameState import GameState
 import data.constants as c
 
@@ -35,3 +37,11 @@ class Menu(GameState):
     def draw(self, surface):
         surface.fill(pg.Color("black"))
         surface.blit(self.title, self.title_rect)
+
+
+def main():
+    data.main("MENU", persist={'unlocked_levels': [1]})
+
+
+if __name__ == "__main__":
+    main()

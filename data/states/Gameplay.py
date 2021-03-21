@@ -1,5 +1,6 @@
 import pygame as pg
 
+import data
 from data.components.Food import Food
 from data.components.PowerUpFactory import PowerUpFactory
 from data.components.Snake import Snake
@@ -103,3 +104,13 @@ class Gameplay(GameState):
             p.draw(surface, c1=self.screen_color)
         surface.blit(self.title, self.title_rect)
         surface.blit(self.score, self.score_rect)
+
+
+def main(level):
+    persist = {'restart': True, 'level': level,
+               'unlocked_levels': [1, 2, 3, 4, 5]}
+    data.main("GAMEPLAY", persist=persist)
+
+
+if __name__ == "__main__":
+    main(level=5)
