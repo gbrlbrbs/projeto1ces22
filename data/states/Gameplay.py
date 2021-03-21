@@ -81,6 +81,12 @@ class Gameplay(GameState):
             self.next_state = "PLAY AGAIN"
         self.done = True
 
+    def cleanup(self):
+        self.factory.stop()
+        if self.next_state != "PAUSED":
+            self.persist.pop("level")
+            self.persist.pop("restart")
+
     def draw(self, surface):
         draw_grid(surface, c1=self.screen_color, c2=self.screen_color)
         self.snake.draw(surface, c1=self.screen_color)
