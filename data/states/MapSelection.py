@@ -14,8 +14,6 @@ class MapSelection(GameState):
         text = "Map Selection. Press {} for gameplay or M-menu.".format(self.unlocked)
         self.title = self.font.render(text, True, pg.Color("gray50"))
         self.title_rect = self.title.get_rect(center=self.screen_rect.center)
-        if c.DEBUG:
-            print(self.__class__.__name__, self.persist)
 
     def get_event(self, event):
         if event.type == pg.QUIT:
