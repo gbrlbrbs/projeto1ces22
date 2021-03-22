@@ -38,6 +38,12 @@ class GameState(object):
         """
         pass
 
+    def cleanup(self):
+        """
+        Method to clean things at the end of the state
+        """
+        pass
+
     def draw(self, surface):
         """
         Draw everything to the screen.
