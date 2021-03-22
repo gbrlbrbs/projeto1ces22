@@ -10,19 +10,6 @@ class PlayAgain(GameState):
         self.text = "You Lost. Play Again? Press Y-yes or N-no."
         super().startup(persistent)
 
-    def get_event(self, event):
-        if event.type == pg.QUIT:
-            self.quit = True
-        elif event.type == pg.KEYUP:
-            if event.key == pg.K_y:
-                self.next_state = "GAMEPLAY"
-                self.done = True
-            elif event.key == pg.K_n:
-                self.next_state = "MAP SELECTION"
-                self.done = True
-        elif event.type == pg.MOUSEBUTTONUP:
-            pass
-
     def draw(self, surface):
         surface.fill(pg.Color("black"))
         surface.blit(self.title, self.title_rect)
