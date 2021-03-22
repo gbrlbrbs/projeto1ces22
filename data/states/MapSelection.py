@@ -1,3 +1,5 @@
+import random
+
 import pygame as pg
 import os
 
@@ -6,26 +8,43 @@ from data.states.statemachine.GameState import GameState
 
 
 class MapSelection(GameState):
-    def __init__(self, unlocked_levels=None):
+    def __init__(self, unlocked_maps=None):
         super().__init__()
-        if unlocked_levels is None:
-            unlocked_levels = {1}
-        self.unlocked_levels = unlocked_levels
         self._maps = []
         self._parse_maps()
+        if unlocked_maps is None:
+            unlocked_maps = []
+        self.unlocked_maps = unlocked_maps
 
     def startup(self, persistent):
-        if pl.new_unlocked_levels in persistent:
-            self.unlock_levels(persistent[pl.new_unlocked_levels])
-        self.text = "Map Selection. Press {} for gameplay or M-menu.".format(self.unlocked_levels)
+        if pl.new_unlocked_maps in persistent:
+            self._unlock_maps(persistent[pl.new_unlocked_maps])
+        self.text = f"Map Selection. Press 1-{len(self.unlocked_maps)}" \
+                    f"for gameplay or M-menu."
+        if __debug__:
+            print(self.unlocked_maps)
         super().startup(persistent)
 
     def draw(self, surface):
         surface.fill(pg.Color("black"))
         surface.blit(self.title, self.title_rect)
 
-    def unlock_levels(self, new_levels):
-        self.unlocked_levels = self.unlocked_levels | new_levels
+    def unlock_map(self, map_):
+        self._unlock_maps([map_])
+
+    def unlock_random_map(self):
+        available_maps = self.get_locked_maps()
+        if available_maps:
+            selected = random.choice(available_maps)
+            self.unlock_map(selected)
+
+    def _unlock_maps(self, new_maps):
+        for m in new_maps:
+            if m not in self.unlocked_maps:
+                self.unlocked_maps.append(m)
+
+    def get_locked_maps(self):
+        return [m['name'] for m in self._maps if m['name'] not in self.unlocked_maps]
 
     def _parse_maps(self, filenames=None, extension='.txt'):
         """
@@ -47,3 +66,6 @@ class MapSelection(GameState):
                     m['free'].append([True if c == '_' else False for c in line])
             self._maps.append(m)
         self._maps.sort(key=lambda map_dict: map_dict['name'])
+
+    def get_map_names(self):
+        return [m['name'] for m in self._maps]

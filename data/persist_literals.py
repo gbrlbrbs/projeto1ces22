@@ -1,3 +1,5 @@
-new_unlocked_levels = 'new_unlocked_levels'
+new_unlocked_maps = 'new_unlocked_maps'
 lvl = 'level'
+selected_map = 'selected_map'
 restart = 'restart'
+map_index = 'map_index'
