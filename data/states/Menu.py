@@ -12,30 +12,13 @@ class Menu(GameState):
         self.text = "Menu. Press M-map, H-help or C-credits."
         super().startup(persistent)
 
-    def get_event(self, event):
-        if event.type == pg.QUIT:
-            self.quit = True
-        elif event.type == pg.KEYUP:
-            if event.key == pg.K_m:
-                self.next_state = "MAP SELECTION"
-                self.done = True
-            elif event.key == pg.K_c:
-                self.next_state = "CREDITS"
-                self.done = True
-            elif event.key == pg.K_h:
-                self.next_state = "HELP"
-                self.done = True
-
-        elif event.type == pg.MOUSEBUTTONUP:
-            pass
-
     def draw(self, surface):
         surface.fill(pg.Color("black"))
         surface.blit(self.title, self.title_rect)
 
 
 def main():
-    data.main("MENU", persist={'unlocked_levels': [1]})
+    data.main("MENU")
 
 
 if __name__ == "__main__":
