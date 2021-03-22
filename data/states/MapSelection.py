@@ -44,6 +44,6 @@ class MapSelection(GameState):
             with open('/'.join([path, filename])) as f:
                 for line in f:
                     line = line.replace('\n', '')
-                    m['free'].append([True if c is '_' else False for c in line])
+                    m['free'].append([True if c == '_' else False for c in line])
             self._maps.append(m)
         self._maps.sort(key=lambda map_dict: map_dict['name'])
