@@ -18,11 +18,18 @@ class Gameplay(GameState):
 
     def startup(self, persistent):
         super().startup(persistent)
-        self.level = self.persist["level"]
-        self.text = "Gameplay. Level {}. Press ESC/P-pause".format(self.level)
+        if pl.selected_map in self.persist:
+            self.map_ = self.persist[pl.selected_map]
+        elif pl.map_index in self.persist:
+            maps = data.states[sl.MAP_SELECTION].unlocked_maps
+            self.map_ = maps[self.persist[pl.map_index]]
+        self.text = "Gameplay. Map {}. Press ESC/P-pause".format(self.map_)
         self.title = self.font.render(self.text, True, pg.Color("gray20"))
         self.title_rect = self.title.get_rect(center=self.screen_rect.center)
-        self.screen_color = pg.Color(c.colors[self.level - 1])
+
+        ms = data.states[sl.MAP_SELECTION]
+        map_id = ms.get_map_names().index(self.map_)
+        self.screen_color = pg.Color(c.colors[map_id])
 
         restart = self.persist["restart"]
         if restart:
@@ -77,15 +84,12 @@ class Gameplay(GameState):
 
     def collided(self):
         self.factory.stop()
-        last_game = {'level': self.level, 'score': self.snake.score}
-        self.persist["last_game"] = last_game
+        # last_game = {'level': self.level, 'score': self.snake.score}
+        # self.persist["last_game"] = last_game
 
         if self.snake.score >= c.min_score:
-            if self.level != len(c.maps):
-                new_level = self.level + 1
-                ms = data.states[sl.MAP_SELECTION]
-                if new_level not in ms.unlocked_levels:
-                    ms.unlock_levels({new_level})
+            ms = data.states[sl.MAP_SELECTION]
+            ms.unlock_random_map()
             self.next_state = "WIN"
         else:
             self.next_state = "PLAY AGAIN"
@@ -93,9 +97,11 @@ class Gameplay(GameState):
 
     def cleanup(self):
         self.factory.stop()
-        if self.next_state not in ["PAUSED", "PLAY AGAIN"]:
-            self.persist.pop("level")
-            self.persist.pop("restart")
+        if pl.selected_map in self.persist:
+            self.persist.pop(pl.selected_map)
+        # if self.next_state not in ["PAUSED", "PLAY AGAIN"]:
+        #     self.persist.pop(pl.selected_map)
+        #     self.persist.pop(pl.restart)
 
     def draw(self, surface):
         draw_grid(surface, c1=self.screen_color, c2=self.screen_color)
@@ -108,10 +114,12 @@ class Gameplay(GameState):
         surface.blit(self.score, self.score_rect)
 
 
-def main(level):
-    persist = {pl.restart: True, pl.lvl: level, pl.new_unlocked_levels: {1, 2, 4, 5}}
+def main(start_map):
+    ms = data.states[sl.MAP_SELECTION]
+    ms.unlock_map(start_map)
+    persist = {pl.restart: True, pl.selected_map: start_map}
     data.main("GAMEPLAY", persist=persist)
 
 
 if __name__ == "__main__":
-    main(level=5)
+    main(start_map='lvl5')
