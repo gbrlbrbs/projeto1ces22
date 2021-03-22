@@ -8,6 +8,8 @@ from data.components.draw_grid import draw_grid
 from data.states.statemachine.GameState import GameState
 
 import data.constants as c
+import data.state_literals as sl
+import data.persist_literals as pl
 
 
 class Gameplay(GameState):
@@ -81,8 +83,9 @@ class Gameplay(GameState):
         if self.snake.score >= c.min_score:
             if self.level != len(c.maps):
                 new_level = self.level + 1
-                if new_level not in self.persist["unlocked_levels"]:
-                    self.persist["unlocked_levels"].append(new_level)
+                ms = data.states[sl.MAP_SELECTION]
+                if new_level not in ms.unlocked_levels:
+                    ms.unlock_levels({new_level})
             self.next_state = "WIN"
         else:
             self.next_state = "PLAY AGAIN"
@@ -106,8 +109,7 @@ class Gameplay(GameState):
 
 
 def main(level):
-    persist = {'restart': True, 'level': level,
-               'unlocked_levels': [1, 2, 3, 4, 5]}
+    persist = {pl.restart: True, pl.lvl: level, pl.new_unlocked_levels: {1, 2, 4, 5}}
     data.main("GAMEPLAY", persist=persist)
 
 
