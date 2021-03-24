@@ -1,7 +1,8 @@
 import random
 import sys
+import os
 
-import pygame
+import pygame, pygame.draw, pygame.image
 
 import data.constants as c
 
@@ -14,6 +15,8 @@ class Snake:
         self.directions = [self.head_direction]
         self.color = (17, 24, 4)
         self.score = 0
+        self.sprite_path = os.path.join(os.getcwd(), 'data', 'sprites', 'bixo')
+        self.sprite_counter = 0
 
     def get_head_position(self):
         return self.positions[0]
@@ -51,11 +54,12 @@ class Snake:
         self.directions = [self.head_direction]
         self.score = 0
 
-    def draw(self, surface, c1=(93, 216, 228)):
+    def draw(self, surface: pygame.Surface, c1=(93, 216, 228)):
         for p, d in zip(self.positions, self.directions):
-            # code for using up, down, left, right sprites
+            sprite = self.get_sprite(d)
+            surface.blit(sprite, p)
             r = pygame.Rect((p[0], p[1]), (c.gridsize, c.gridsize))
-            pygame.draw.rect(surface, self.color, r)
+            '''pygame.draw.rect(surface, self.color, r)'''
             pygame.draw.rect(surface, c1, r, 1)
 
     def handle_keys(self):
@@ -72,3 +76,29 @@ class Snake:
                     self.turn(c.left)
                 elif event.key == pygame.K_RIGHT:
                     self.turn(c.right)
+
+    def get_sprite(self, d):
+        if self.sprite_counter > 1:
+            self.sprite_counter = 0
+
+        if d == c.up:
+            direction = 'up'
+        elif d == c.down:
+            direction = 'down'
+        elif d == c.left:
+            direction = 'left'
+        elif d == c.right:
+            direction = 'right'
+
+        sprite = pygame.image.load(
+            os.path.join(
+                self.sprite_path, direction + '_move' + str(self.sprite_counter) + '.png'
+                )
+            )
+        
+        self.sprite_counter += 1
+        sprite = sprite.convert_alpha()
+        return sprite     
+        
+
+
