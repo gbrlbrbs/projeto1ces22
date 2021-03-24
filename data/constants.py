@@ -13,7 +13,7 @@ down = (0, 1)
 left = (-1, 0)
 right = (1, 0)
 
-gridsize = 20
+gridsize = 30
 grid_width = screen_width / gridsize
 grid_height = screen_height / gridsize
 

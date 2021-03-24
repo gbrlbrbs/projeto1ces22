@@ -9,8 +9,9 @@ import data.constants as c
 class Snake:
     def __init__(self):
         self.length = 1
-        self.positions = [((c.screen_width / 2), (c.screen_height / 2))]
-        self.direction = random.choice([c.up, c.down, c.left, c.right])
+        self.head_direction = random.choice([c.up, c.down, c.left, c.right])
+        self.positions = [(c.screen_width/2, c.screen_height/2)]
+        self.directions = [self.head_direction]
         self.color = (17, 24, 4)
         self.score = 0
 
@@ -18,14 +19,14 @@ class Snake:
         return self.positions[0]
 
     def turn(self, point):
-        if self.length > 1 and (point[0] * -1, point[1] * -1) == self.direction:
+        if self.length > 1 and (point[0] * -1, point[1] * -1) == self.head_direction:
             return
         else:
-            self.direction = point
+            self.head_direction = point
 
     def move(self):
         cur = self.get_head_position()
-        x, y = self.direction
+        x, y = self.head_direction
         new = (cur[0] + (x * c.gridsize), cur[1] + (y * c.gridsize))
         xn, yn = new
         # checks if the snake collided with map borders
@@ -36,18 +37,23 @@ class Snake:
             return True
         else:
             self.positions.insert(0, new)
+            self.directions.insert(0, (x, y))
             if len(self.positions) > self.length:
                 self.positions.pop()
+            if len(self.directions) > self.length:
+                self.directions.pop()
             return False
 
     def reset(self):
         self.length = 1
-        self.positions = [((c.screen_width / 2), (c.screen_height / 2))]
-        self.direction = random.choice([c.up, c.down, c.left, c.right])
+        self.head_direction = random.choice([c.up, c.down, c.left, c.right])
+        self.positions = [(c.screen_width/2, c.screen_height/2)]
+        self.directions = [self.head_direction]
         self.score = 0
 
     def draw(self, surface, c1=(93, 216, 228)):
-        for p in self.positions:
+        for p, d in zip(self.positions, self.directions):
+            # code for using up, down, left, right sprites
             r = pygame.Rect((p[0], p[1]), (c.gridsize, c.gridsize))
             pygame.draw.rect(surface, self.color, r)
             pygame.draw.rect(surface, c1, r, 1)
