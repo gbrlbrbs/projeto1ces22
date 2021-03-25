@@ -55,12 +55,17 @@ class Snake:
         self.score = 0
 
     def draw(self, surface: pygame.Surface, c1=(93, 216, 228)):
+        if self.sprite_counter > 1:
+            self.sprite_counter = 0
+        
         for p, d in zip(self.positions, self.directions):
             sprite = self.get_sprite(d)
             surface.blit(sprite, p)
-            r = pygame.Rect((p[0], p[1]), (c.gridsize, c.gridsize))
-            '''pygame.draw.rect(surface, self.color, r)'''
-            pygame.draw.rect(surface, c1, r, 1)
+            '''r = pygame.Rect((p[0], p[1]), (c.gridsize, c.gridsize))
+            pygame.draw.rect(surface, self.color, r)
+            pygame.draw.rect(surface, c1, r, 1)'''
+        
+        self.sprite_counter += 1
 
     def handle_keys(self):
         for event in pygame.event.get():
@@ -78,9 +83,6 @@ class Snake:
                     self.turn(c.right)
 
     def get_sprite(self, d):
-        if self.sprite_counter > 1:
-            self.sprite_counter = 0
-
         if d == c.up:
             direction = 'up'
         elif d == c.down:
@@ -96,7 +98,6 @@ class Snake:
                 )
             )
         
-        self.sprite_counter += 1
         sprite = sprite.convert_alpha()
         return sprite     
         
