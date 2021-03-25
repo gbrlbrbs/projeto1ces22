@@ -1,8 +1,8 @@
 import pygame as pg
 
 from data.components.Food import Food
+from data.components.PowerUpFactory import PowerUpFactory
 from data.components.Snake import Snake
-from data.components.PowerUp import PowerUp, PowerUpFactory
 from data.components.draw_grid import draw_grid
 from data.states.GameState import GameState
 
@@ -41,12 +41,11 @@ class Gameplay(GameState):
             self.title_rect.center = event.pos
         elif event.type == pg.KEYUP:
             if event.key == pg.K_c:
-                self.factory.stop()
                 self.collided()
             elif event.key in [pg.K_ESCAPE, pg.K_p]:
-                self.factory.stop()
                 self.next_state = "PAUSED"
                 self.persist["restart"] = False
+                self.factory.stop()
                 self.done = True
         elif event.type == pg.KEYDOWN:
             if event.key == pg.K_UP:
@@ -75,6 +74,7 @@ class Gameplay(GameState):
         self.score_rect.move_ip(10, 10)
 
     def collided(self):
+        self.factory.stop()
         last_game = {'level': self.level, 'score': self.snake.score}
         self.persist["last_game"] = last_game
 
@@ -90,7 +90,7 @@ class Gameplay(GameState):
 
     def cleanup(self):
         self.factory.stop()
-        if self.next_state != "PAUSED":
+        if self.next_state not in ["PAUSED", "PLAY AGAIN"]:
             self.persist.pop("level")
             self.persist.pop("restart")
 
@@ -98,5 +98,8 @@ class Gameplay(GameState):
         draw_grid(surface, c1=self.screen_color, c2=self.screen_color)
         self.snake.draw(surface, c1=self.screen_color)
         self.food.draw(surface, c1=self.screen_color)
+        # draw powerups
+        for p in self.factory.collectable_powerups:
+            p.draw(surface, c1=self.screen_color)
         surface.blit(self.title, self.title_rect)
         surface.blit(self.score, self.score_rect)
