@@ -75,10 +75,6 @@ def button(msg, x, y, w, h, inactive_color, active_color):
         if click[0] == 1:
             global current_level
             current_level = msg
-            #############################################################################
-            # deixei como uma função "go_to_level()", que precisa ser implementada quando 
-            # decidirmos o que acontece mesmo ao clicar
-            #############################################################################
 
     else: 
         pygame.draw.rect(gameDisplay, inactive_color,(x, y, w, h))
