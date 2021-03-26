@@ -30,6 +30,8 @@ class Game(object):
         if persist is None:
             persist = self.state.persist
         self.state.startup(persist)
+        if __debug__:
+            self.print_persist()
 
     def event_loop(self):
         """Events are passed for handling to the current state."""
@@ -45,6 +47,8 @@ class Game(object):
         persistent = self.state.persist
         self.state = self.states[self.state_name]
         self.state.startup(persistent)
+        if __debug__:
+            self.print_persist()
 
     def update(self, dt):
         """
@@ -73,3 +77,7 @@ class Game(object):
             self.update(dt)
             self.draw()
             pg.display.update()
+
+    def print_persist(self):
+        if __debug__:
+            print(self.state.__class__.__name__, self.state.persist)

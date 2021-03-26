@@ -1,12 +1,15 @@
 import pygame as pg
 
+import data
 from data.components.Food import Food
 from data.components.PowerUpFactory import PowerUpFactory
 from data.components.Snake import Snake
 from data.components.draw_grid import draw_grid
-from data.states.GameState import GameState
+from data.states.statemachine.GameState import GameState
 
 import data.constants as c
+import data.state_literals as sl
+import data.persist_literals as pl
 
 
 class Gameplay(GameState):
@@ -15,18 +18,17 @@ class Gameplay(GameState):
 
     def startup(self, persistent):
         super().startup(persistent)
+        self.level = self.persist["level"]
+        self.text = "Gameplay. Level {}. Press ESC/P-pause".format(self.level)
+        self.title = self.font.render(self.text, True, pg.Color("gray20"))
+        self.title_rect = self.title.get_rect(center=self.screen_rect.center)
+        self.screen_color = pg.Color(c.colors[self.level - 1])
+
         restart = self.persist["restart"]
         if restart:
             self.restart()
-        self.factory.start()
-        self.level = self.persist["level"]
-        self.screen_color = pg.Color(c.colors[self.level - 1])
-        text = "Gameplay. Level {}. Press ESC/P-pause".format(self.level)
-        self.title = self.font.render(text, True, pg.Color("gray20"))
-        self.title_rect = self.title.get_rect(center=self.screen_rect.center)
 
-        if c.DEBUG:
-            print(self.__class__.__name__, self.persist)
+        self.factory.start()
 
     def restart(self):
         self.snake = Snake()
@@ -81,8 +83,9 @@ class Gameplay(GameState):
         if self.snake.score >= c.min_score:
             if self.level != len(c.maps):
                 new_level = self.level + 1
-                if new_level not in self.persist["unlocked_levels"]:
-                    self.persist["unlocked_levels"].append(new_level)
+                ms = data.states[sl.MAP_SELECTION]
+                if new_level not in ms.unlocked_levels:
+                    ms.unlock_levels({new_level})
             self.next_state = "WIN"
         else:
             self.next_state = "PLAY AGAIN"
@@ -103,3 +106,12 @@ class Gameplay(GameState):
             p.draw(surface, c1=self.screen_color)
         surface.blit(self.title, self.title_rect)
         surface.blit(self.score, self.score_rect)
+
+
+def main(level):
+    persist = {pl.restart: True, pl.lvl: level, pl.new_unlocked_levels: {1, 2, 4, 5}}
+    data.main("GAMEPLAY", persist=persist)
+
+
+if __name__ == "__main__":
+    main(level=5)

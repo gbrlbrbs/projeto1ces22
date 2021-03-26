@@ -1,5 +1,3 @@
-DEBUG = True
-
 maps = {'1', '2', '3', '4', '5'}
 colors = ['red', 'blue', 'green', 'pink', 'cyan']
 
@@ -17,4 +15,7 @@ gridsize = 16
 grid_width = screen_width / gridsize
 grid_height = screen_height / gridsize
 
-min_score = 6
+if not __debug__:
+    min_score = 6
+else:
+    min_score = 0
