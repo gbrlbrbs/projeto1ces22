@@ -15,7 +15,7 @@ class Snake:
         self.directions = [self.head_direction]
         self.color = (17, 24, 4)
         self.score = 0
-        self.sprite_path = os.path.join(os.getcwd(), 'data', 'sprites', 'bixo')
+        self.sprite_path = os.path.join(os.getcwd(), 'resources', 'sprites', 'bixo')
         self.sprite_counter = 0
 
     def get_head_position(self):

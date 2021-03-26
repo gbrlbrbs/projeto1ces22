@@ -11,7 +11,7 @@ class Food:
         self.position = (0, 0)
         self.color = (223, 163, 49)
         self.randomize_position()
-        self.sprite_path = os.path.join(os.getcwd(), 'data', 'sprites', 'food')
+        self.sprite_path = os.path.join(os.getcwd(), 'resources', 'sprites', 'food')
         self.sprite_counter = 0
 
     def randomize_position(self, snake=None):
