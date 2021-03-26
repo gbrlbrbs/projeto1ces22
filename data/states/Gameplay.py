@@ -31,7 +31,7 @@ class Gameplay(GameState):
     def restart(self):
         self.snake = Snake()
         self.food = Food()
-        self.factory = PowerUpFactory(5, {}, self.snake.positions)
+        self.factory = PowerUpFactory(10, {}, self.snake.positions)
 
     def get_event(self, event):
         if event.type == pg.QUIT:
@@ -67,6 +67,12 @@ class Gameplay(GameState):
             self.snake.length += 1
             self.snake.score += 1
             self.food.randomize_position(self.snake.positions)
+
+        for p in self.factory.collectable_powerups:
+            if self.snake.get_head_position() == p.position:
+                p.get_effect()
+                self.factory.collectable_powerups.remove(p)
+                break
 
         score_text = "Score: {}".format(self.snake.score)
         self.score = self.font.render(score_text, True, pg.Color("gray10"))
