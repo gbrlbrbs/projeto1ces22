@@ -35,10 +35,7 @@ class PowerUpFactory:
         Simplified creation method
         """
         k = random.random()
-        if c.DEBUG:
-            print("factory running")
         if k > 0.5:
-            print("entered")
             self.collectable_powerups.append(PowerUp())
             end = len(self.collectable_powerups) - 1
             self.collectable_powerups[end].randomize_position(snake_positions)
