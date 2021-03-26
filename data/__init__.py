@@ -21,7 +21,7 @@ pg.init()
 _screen = pg.display.set_mode((c.screen_width, c.screen_height))
 states = {
     sl.MENU: Menu(),
-    sl.MAP_SELECTION: MapSelection({1}),
+    sl.MAP_SELECTION: MapSelection(),
     sl.GAMEPLAY: Gameplay(),
     sl.PLAY_AGAIN: PlayAgain(),
     sl.WIN: Win(),
@@ -54,10 +54,10 @@ def _set_transitions():
     transitions.set(origin=sl.PLAY_AGAIN, dest=sl.MAP_SELECTION, key=pg.K_n)
 
     transitions.set(origin=sl.MAP_SELECTION, dest=sl.MENU, key=pg.K_m)
-    for lvl in range(1, 10):
-        key = pg.K_1 - 1 + lvl
+    for map_index in range(0, 9):
+        key = pg.K_1 + map_index
         transitions.set(origin=sl.MAP_SELECTION, dest=sl.GAMEPLAY, key=key,
-                        level=lvl, restart=True)
+                        map_index=map_index, restart=True, callback=print, params=[map_index])
 
 
 def main(initial_state, persist=None):
