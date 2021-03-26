@@ -5,3 +5,4 @@ if __name__ == "__main__":
 
 # TODO:
 #  bugfix I can play lvl 2 even if it is blocked
+#  bugfix if i type a lvl out of range the game crashes
