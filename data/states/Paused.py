@@ -11,6 +11,11 @@ class Paused(GameState):
         self.text = "Paused. Press C-continue or M-map."
         super().startup(persistent)
 
+    def cleanup(self):
+        if self.next_state != "GAMEPLAY":
+            self.persist.pop("level")
+            self.persist.pop("restart")
+
     def draw(self, surface):
         surface.fill(pg.Color("black"))
         surface.blit(self.title, self.title_rect)
