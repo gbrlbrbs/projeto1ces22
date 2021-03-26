@@ -40,3 +40,10 @@ class PowerUpFactory:
             self.collectable_powerups.append(PowerUp())
             end = len(self.collectable_powerups) - 1
             self.collectable_powerups[end].randomize_position(snake_positions)
+
+    def get_positions(self):
+        """
+        Method to get collectable power-up positions
+        :return: list with power-up coordinates
+        """
+        return [p.position for p in self.collectable_powerups]
